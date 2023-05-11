@@ -17,13 +17,21 @@ fn main() {
     let mut s1_cp = s1.clone();
     println!("s1_cp before:\n{:#?}\n", s1_cp);
 
-    // ... However, the `comparable` crate does not seem to supply
-    // a way to apply the patch to an object. However, it is not difficult
-    // to "hand-craft" such code (it's just really tedious).
     let changes = match changes {
         Changed::Unchanged => panic!("no change?!"),
         Changed::Changed(changes) => changes,
     };
+    // ... However, the `comparable` crate does not seem to supply
+    // a way to apply the patch to an object.[1] However, it is not difficult
+    // to "hand-craft" such code (it's just really tedious).
+    //
+    // [1] https://docs.rs/comparable/latest/comparable/index.html#changes-the-comparablechange-associated-type
+    //     There, it says "The primary purpose of a Comparable::Change value is
+    //     to compare it to a set of changes you expected to see, so design
+    //     choices have been made to optimize for clarity and printing rather
+    //     than, say, the ability to transform one value into another by
+    //     applying a changeset. This is entirely possible give a dataset and a
+    //     change description, but no work has been done to achieve this goal."
     for change in changes {
         match change {
             FooChange::Bar(bar) => {
